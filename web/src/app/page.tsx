@@ -21,6 +21,10 @@ export default async function Home() {
   const isAuthenticated = cookies().has('token')
   const token = cookies().get('token')?.value
 
+  if (!isAuthenticated) {
+    return <EmptyMemories />
+  }
+
   const response = await api.get('/memories', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -29,7 +33,7 @@ export default async function Home() {
 
   const memories: Memory[] = response.data
 
-  if (memories.length === 0 || !isAuthenticated) {
+  if (memories.length === 0) {
     return <EmptyMemories />
   }
 
